@@ -314,6 +314,164 @@
         }
         /* --- 新增音乐控制图标样式结束 --- */
 
+        /* --- 轮播图样式 --- */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.carousel-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.carousel-dot.active {
+    background-color: #fff;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    z-index: 10;
+}
+
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-next {
+    right: 10px;
+}
+
+/* --- 全屏查看器样式 --- */
+#image-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+#image-viewer.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.viewer-content {
+    position: relative;
+    width: 75vw;
+    height: 75vh;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.viewer-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.viewer-prev {
+    left: 20px;
+}
+
+.viewer-next {
+    right: 20px;
+}
+
+.viewer-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.viewer-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.viewer-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.viewer-dot.active {
+    background-color: #fff;
+}
     </style>
 </head>
 <body>
@@ -392,6 +550,15 @@
         您的浏览器不支持音频元素。
     </audio>
     <!-- --- 新增隐藏的音频元素结束 --- -->
+
+    <!-- 全屏图片查看器 -->
+<div id="image-viewer">
+    <button class="viewer-close">×</button>
+    <button class="viewer-nav viewer-prev">&#10094;</button>
+    <div class="viewer-content" id="viewer-image"></div>
+    <button class="viewer-nav viewer-next">&#10095;</button>
+    <div class="viewer-dots" id="viewer-dots"></div>
+</div>
 
     <script>
         // 创建星空背景
@@ -618,29 +785,73 @@
                 // 设置标题
                 modalTitle.textContent = `任务目标: ${taskText}`;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 // 根据任务ID设置不同的内容
                 if (taskId === 'task1') {
-                    // 父级任务显示注册按钮
-                    modalContentArea.innerHTML = '<p>官网注册：</p>';
-                    const registerBtn = document.createElement('a');
-                    registerBtn.href = 'https://robertsspaceindustries.com/en/enlist?referral=STAR-9KWF-Y7CS';
-                    registerBtn.target = '_blank'; // 在新标签页打开
-                    registerBtn.className = 'register-btn';
-                    registerBtn.textContent = '立即注册';
-                    registerBtn.addEventListener('click', (e) => {
-                        e.stopPropagation(); // 阻止事件冒泡
-                        // 链接会在新标签页打开，不需要额外处理
-                    });
-                    modalActions.appendChild(registerBtn);
+                    if (taskId === 'task1') {
+    // 父级任务显示注册按钮和轮播图
+    modalContentArea.innerHTML = `
+        <div class="carousel-container" id="register-carousel">
+            <div class="carousel-slide active" style="background-image: url('注册账号1.png');"></div>
+            <div class="carousel-slide" style="background-image: url('注册账号2.png');"></div>
+            <button class="carousel-nav carousel-prev">&#10094;</button>
+            <button class="carousel-nav carousel-next">&#10095;</button>
+            <div class="carousel-controls">
+                <span class="carousel-dot active" data-index="0"></span>
+                <span class="carousel-dot" data-index="1"></span>
+            </div>
+        </div>`;
+    
+}
+    
+    const registerBtn = document.createElement('a');
+    registerBtn.href = 'https://robertsspaceindustries.com/en/enlist?referral=STAR-9KWF-Y7CS';
+    registerBtn.target = '_blank';
+    registerBtn.className = 'register-btn';
+    registerBtn.textContent = '立即注册';
+    registerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    modalActions.appendChild(registerBtn);
 
-                    const warningText1 = document.createElement('div');
-                    warningText1.className = 'warning-text';
-                    warningText1.textContent = '慎重选择163邮箱注册，易被撞库洗号';
-                    const warningText2 = document.createElement('div');
-                    warningText2.className = 'warning-text';
-                    warningText2.textContent = '初始邮箱权重大，勿用非本人邮箱注册';
-                    modalActions.appendChild(warningText1);
-                    modalActions.appendChild(warningText2);
+    const warningText1 = document.createElement('div');
+    warningText1.className = 'warning-text';
+    warningText1.textContent = '慎重选择163邮箱注册，易被撞库洗号';
+    const warningText2 = document.createElement('div');
+    warningText2.className = 'warning-text';
+    warningText2.textContent = '初始邮箱权重大，勿用非本人邮箱注册';
+    modalActions.appendChild(warningText1);
+    modalActions.appendChild(warningText2);
+    
+    // 初始化轮播图（无自动播放）
+    initCarousel();
       
                 } else if (taskId === 'task2') {
                     // 子级任务显示与父级相同的布局，但链接不同
@@ -846,6 +1057,7 @@
             console.log("Window loaded. Creating stars and drawing lines.");
             createStars();
             drawAllLines();
+            initImageViewer();
         });
 
         // 如果窗口大小改变，重新绘制连接线
@@ -968,6 +1180,222 @@
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
         }
+
+
+         // 轮播图控制函数（无自动播放）
+function initCarousel() {
+    const carousel = document.getElementById('register-carousel');
+    if (!carousel) return;
+    
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const dots = carousel.querySelectorAll('.carousel-dot');
+    const prevBtn = carousel.querySelector('.carousel-prev');
+    const nextBtn = carousel.querySelector('.carousel-next');
+    
+    let currentSlide = 0;
+    
+    // 切换到指定幻灯片
+    function goToSlide(index) {
+        // 边界检查
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+        
+        // 更新幻灯片
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+        
+        currentSlide = index;
+    }
+    
+    // 下一张幻灯片
+    function nextSlide() {
+        goToSlide(currentSlide + 1);
+    }
+    
+    // 上一张幻灯片
+    function prevSlide() {
+        goToSlide(currentSlide - 1);
+    }
+    
+    // 打开全屏查看器
+    function openViewer() {
+        const viewer = document.getElementById('image-viewer');
+        const viewerImage = document.getElementById('viewer-image');
+        const viewerDots = document.getElementById('viewer-dots');
+        
+        // 设置当前图片
+        viewerImage.style.backgroundImage = slides[currentSlide].style.backgroundImage;
+        
+        // 创建指示器
+        viewerDots.innerHTML = '';
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('span');
+            dot.className = `viewer-dot ${index === currentSlide ? 'active' : ''}`;
+            dot.setAttribute('data-index', index);
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+                viewerImage.style.backgroundImage = slides[index].style.backgroundImage;
+                updateViewerDots(index);
+            });
+            viewerDots.appendChild(dot);
+        });
+        
+        viewer.classList.add('show');
+    }
+    
+    // 更新查看器指示器
+    function updateViewerDots(index) {
+        const dots = document.querySelectorAll('.viewer-dot');
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+    }
+    
+    // 事件监听
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        prevSlide();
+    });
+    
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nextSlide();
+    });
+    
+    // 点选指示器
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const index = parseInt(dot.getAttribute('data-index'));
+            goToSlide(index);
+        });
+    });
+    
+    // 点击图片打开全屏查看器
+    slides.forEach(slide => {
+        slide.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openViewer();
+        });
+    });
+    
+    // 点击轮播容器也打开全屏查看器
+    carousel.addEventListener('click', (e) => {
+        if (e.target === carousel) {
+            openViewer();
+        }
+    });
+}
+
+// 全屏查看器控制
+function initImageViewer() {
+    const viewer = document.getElementById('image-viewer');
+    const closeBtn = viewer.querySelector('.viewer-close');
+    const prevBtn = viewer.querySelector('.viewer-prev');
+    const nextBtn = viewer.querySelector('.viewer-next');
+    const viewerImage = document.getElementById('viewer-image');
+    
+    let currentViewerIndex = 0; // 添加当前查看器索引
+    
+    // 关闭查看器
+    function closeViewer() {
+        viewer.classList.remove('show');
+    }
+    
+    // 切换到下一张图片
+    function nextViewerImage() {
+        const carousel = document.getElementById('register-carousel');
+        if (!carousel) return;
+        
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        
+        // 计算下一张索引（循环）
+        currentViewerIndex = (currentViewerIndex + 1) % slides.length;
+        viewerImage.style.backgroundImage = slides[currentViewerIndex].style.backgroundImage;
+        updateViewerDots(currentViewerIndex);
+        
+        // 同时更新轮播图状态
+        goToCarouselSlide(currentViewerIndex);
+    }
+    
+    // 切换到上一张图片
+    function prevViewerImage() {
+        const carousel = document.getElementById('register-carousel');
+        if (!carousel) return;
+        
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        
+        // 计算上一张索引（循环）
+        currentViewerIndex = (currentViewerIndex - 1 + slides.length) % slides.length;
+        viewerImage.style.backgroundImage = slides[currentViewerIndex].style.backgroundImage;
+        updateViewerDots(currentViewerIndex);
+        
+        // 同时更新轮播图状态
+        goToCarouselSlide(currentViewerIndex);
+    }
+    
+    // 更新查看器指示器
+    function updateViewerDots(index) {
+        const dots = document.querySelectorAll('.viewer-dot');
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+        currentViewerIndex = index; // 更新当前索引
+    }
+    
+    // 更新轮播图状态
+    function goToCarouselSlide(index) {
+        const carousel = document.getElementById('register-carousel');
+        if (!carousel) return;
+        
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+    }
+    
+    // 事件监听
+    closeBtn.addEventListener('click', closeViewer);
+    prevBtn.addEventListener('click', prevViewerImage);
+    nextBtn.addEventListener('click', nextViewerImage);
+    
+    // 点击背景关闭
+    viewer.addEventListener('click', (e) => {
+        if (e.target === viewer) {
+            closeViewer();
+        }
+    });
+    
+    // ESC键关闭
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && viewer.classList.contains('show')) {
+            closeViewer();
+        }
+    });
+    
+    // 点击指示器切换图片
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('viewer-dot')) {
+            const index = parseInt(e.target.getAttribute('data-index'));
+            currentViewerIndex = index;
+            const carousel = document.getElementById('register-carousel');
+            if (carousel) {
+                const slides = carousel.querySelectorAll('.carousel-slide');
+                viewerImage.style.backgroundImage = slides[index].style.backgroundImage;
+                updateViewerDots(index);
+                goToCarouselSlide(index);
+            }
+        }
+    });
+}
+
+// 初始化全屏查看器
+initImageViewer();
 
     </script>
 </body>
